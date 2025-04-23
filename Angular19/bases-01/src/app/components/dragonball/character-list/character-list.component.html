@@ -1,0 +1,13 @@
+<h3>{{listName()}}</h3>
+<ul>
+    @for(character of characters(); track character ;let idx = $index){
+        @if(character.power > 500){
+            <li>
+                <span>{{idx}} - {{character.name}}</span>
+                <strong [class.text-danger]="character.power >= 9000" >( {{character.power}} )</strong>
+            </li>
+        }@else{
+            <li><strong>nadie</strong></li>
+        }
+    }
+</ul>
