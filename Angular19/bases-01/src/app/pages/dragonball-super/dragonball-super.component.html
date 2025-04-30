@@ -4,15 +4,19 @@
     <div class="col-12 col-sm-6">
 
         <dragon-character-add
-           (newCharacter)="addCharacter($event)" />
-
+           (newCharacter)="dragonballService.addCharacter($event)" />
+        <!-- 
+            (newCharacter) ==> evento EMITIDO por el componente hijo dragon-character-add
+            addCharacter($event) ==> METODO que se ejecuta en el componente padre dragonball-super 
+            $event ==> VALOR del evento emitido 
+        -->
     </div>
     
     <div class="col-12 col-sm-6">
 
         <dragonball-character-list 
             listName = "Listado de personajes"
-            [characters]="characters()"/>
+            [characters]="dragonballService.characters()"/>
     
         </div>
     

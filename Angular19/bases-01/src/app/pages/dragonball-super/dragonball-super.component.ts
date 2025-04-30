@@ -1,12 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CharacterListComponent } from "../../components/dragonball/character-list/character-list.component";
 import { CharacterAddComponent } from "../../components/dragonball/character-add/character-add.component";
+import { DragonBallService } from '../../services/dragonball.service';
 
-interface Character {
-  id: number;
-  name: string;
-  power: number;
-}
 
 @Component({
   selector: 'dragonball-super',
@@ -14,24 +10,17 @@ interface Character {
   templateUrl: './dragonball-super.component.html',
 })
 export class DragonballSuperPageComponent {
+
+  // Se inyecta el servicio DragonBallService en el componente
+  public dragonballService = inject(DragonBallService);
   
-  name = signal('');
-  power = signal(0);
+  // characters = signal<Character[]>([
+  //   {id: 1, name: 'Goku', power: 9000},
+  //   {id: 2, name: 'Vegeta', power: 8500},
+  // ]);
 
-  characters = signal<Character[]>([
-    {id: 1, name: 'Goku', power: 9000},
-    {id: 2, name: 'Vegeta', power: 8500},
-    // {id: 4, name: 'Yamcha', power: 500},
-    // {id: 4, name: 'Piccolo', power: 6000},
-  ]);
-
-  addCharacter(character : Character) {
-    this.characters.update((list)=>[... list, character]);
-  }
-
-  resetForm() {
-    this.name.set('');
-    this.power.set(0);
-  }
+  // addCharacter(character : Character) {
+  //   this.characters.update((list)=>[... list, character]);
+  // }
 
 }

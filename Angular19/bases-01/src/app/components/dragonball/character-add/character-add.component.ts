@@ -12,7 +12,7 @@ export class CharacterAddComponent {
   name = signal('');
   power = signal(0);
 
-  newCharacter = output<Character>(); // emite algo
+  newCharacter = output<Character>(); // Evento, va a emitir algo de tipo <Character>
 
   characters = signal<Character[]>([
     {id: 1, name: 'Goku', power: 9000},
