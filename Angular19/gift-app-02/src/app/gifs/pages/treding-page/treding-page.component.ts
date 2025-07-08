@@ -32,7 +32,6 @@ export default class TredingPageComponent implements AfterViewInit {
     const clientHeight = scrollDiv.clientHeight;
     const scrollHeight = scrollDiv.scrollHeight;
 
-    debugger;
     // Verificando si el scroll está cerca del final del div
     const isAtBottom = scrollTop + clientHeight + 300 >= scrollHeight;
     this.scrollStateService.tredingScrollState.set(scrollTop); // Guardar la posición del scroll
