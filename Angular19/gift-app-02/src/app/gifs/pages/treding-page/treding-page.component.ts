@@ -1,31 +1,45 @@
-import { Component, inject, signal } from '@angular/core';
-import { GifListComponent } from '@app/gifs/components/gif-list/gif-list.component';
+import { AfterViewInit, Component, ElementRef, inject, viewChild } from '@angular/core';
 import { GifService } from '@app/gifs/sevices/gifs.service';
-
-// const imageUrls: string[] = [
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg",
-//   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg"
-// ];
+import { ScrollStateService } from '@app/shared/services/scroll-state.service';
 
 @Component({
   selector: 'app-treding-page',
-  imports: [GifListComponent],
   templateUrl: './treding-page.component.html'
 })
-export default class TredingPageComponent { 
+export default class TredingPageComponent implements AfterViewInit { 
   
   gifService = inject(GifService);
+  scrollStateService = inject(ScrollStateService);
+  scrollDivRefer = viewChild<ElementRef<HTMLDivElement>>('groupDiv');
 
-  // gifs = signal(imageUrls);
+  ngAfterViewInit(): void {
+    const scrollDiv = this.scrollDivRefer()?.nativeElement;
+    if(!scrollDiv) return;
+    
+    scrollDiv.scrollTop = this.scrollStateService.tredingScrollState(); // Restaurar la posición del scroll
+  }
+
+
+  onScroll(event : Event) {
+    const scrollDiv = this.scrollDivRefer()?.nativeElement;
+    if(!scrollDiv) return;
+    
+    // Obteniendo las propiedades de scroll del div
+    // scrollTop: posición del scroll en el eje Y
+    // clientHeight: altura visible del div
+    // scrollHeight: altura total del contenido del div
+    const scrollTop = scrollDiv.scrollTop;
+    const clientHeight = scrollDiv.clientHeight;
+    const scrollHeight = scrollDiv.scrollHeight;
+
+    debugger;
+    // Verificando si el scroll está cerca del final del div
+    const isAtBottom = scrollTop + clientHeight + 300 >= scrollHeight;
+    this.scrollStateService.tredingScrollState.set(scrollTop); // Guardar la posición del scroll
+    if(isAtBottom){
+      // Si está cerca del final, cargamos más gifs
+      this.gifService.loadTradingGifs();
+    }
+  }
 
 }
